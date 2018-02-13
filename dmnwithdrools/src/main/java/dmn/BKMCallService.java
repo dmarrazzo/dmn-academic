@@ -18,25 +18,26 @@ public class BKMCallService {
 
 		KieContainer kieContainer = kieServices.getKieClasspathContainer();
 		DMNRuntime dmnRuntime = kieContainer.newKieSession().getKieRuntime(DMNRuntime.class);
-		DMNResult dmnResult = testJavaInvocationComplexInput(dmnRuntime);
+		DMNResult dmnResult = testJavaInvocationPersonComplex(dmnRuntime);
 
 		for (DMNDecisionResult dr : dmnResult.getDecisionResults()) {
 			System.out.println("Decision '" + dr.getDecisionName() + "' : " + dr.getResult());
 		}
 	}
 
-	public static DMNResult testJavaInvocationSimple(DMNRuntime dmnRuntime) {
+	public static DMNResult testJavaInvocationPersonComplex(DMNRuntime dmnRuntime) {
 		DMNModel dmnModel = dmnRuntime.getModel("http://www.trisotech.com/definitions/_392573d3-b0fb-4118-b40e-b8da2aba9c23", "JavaInvocation");
 
 		DMNContext dmnContext = dmnRuntime.newContext();
 
-		dmnContext.set("Input", "test");
+		Person person = new Person("Tony", 19, "italy");
+		dmnContext.set("Input", person);
 
 		DMNResult dmnResult = dmnRuntime.evaluateAll(dmnModel, dmnContext);
 		return dmnResult;
 	}
 
-	public static DMNResult testJavaInvocationComplexInput(DMNRuntime dmnRuntime) {
+	public static DMNResult testDrivingLicence(DMNRuntime dmnRuntime) {
 		DMNModel dmnModel = dmnRuntime.getModel("http://www.trisotech.com/definitions/_2cc717ad-24d5-46d5-acb0-0a034ebac378", "driving-eligibility-2");
 
 		Set<InputDataNode> inputs = dmnModel.getInputs();

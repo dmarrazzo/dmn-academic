@@ -76,6 +76,7 @@ public class DmnRunner {
 			long endtime = System.nanoTime();
 
 			Long elapsedtime = endtime - starttime;
+			System.out.println("elaped: " + elapsedtime / 1000000);
 			timeSum += elapsedtime;
 			endtime = 0;
 			starttime = 0;

@@ -11,6 +11,11 @@ public class Person implements java.io.Serializable {
 	public Person() {
 	}
 
+	@Override
+	public String toString() {
+		return String.format("Person [name=%s, age=%s, country=%s]", name, age, country);
+	}
+
 	public java.lang.String getName() {
 		return this.name;
 	}
