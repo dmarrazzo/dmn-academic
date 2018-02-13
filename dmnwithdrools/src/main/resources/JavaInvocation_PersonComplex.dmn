@@ -14,6 +14,9 @@
       <semantic:typeRef>feel:number</semantic:typeRef>
     </semantic:itemComponent>
   </semantic:itemDefinition>
+  <semantic:itemDefinition isCollection="true" label="tPersonList" name="tPersonList">
+    <semantic:typeRef>tPerson</semantic:typeRef>
+  </semantic:itemDefinition>
   <semantic:inputData displayName="Input" id="_a8b35b9a-fd3c-4af6-9bf8-fad21b8ce56e" name="Input">
     <semantic:variable id="_6e9b53b4-4e02-430b-b7c3-47ad854a8e2a" name="Input" typeRef="tPerson"/>
   </semantic:inputData>
@@ -27,14 +30,14 @@
     </semantic:knowledgeRequirement>
     <semantic:context id="_7d08e1d7-93bb-46bd-8ce4-19e06068ec1d">
       <semantic:contextEntry>
-        <semantic:variable id="undefined" name="result person" typeRef="tPerson"/>
+        <semantic:variable id="undefined" name="result person" typeRef="tPersonList"/>
         <semantic:literalExpression id="_7e275c7b-7e9f-4f18-8e54-c6e437398ccb">
           <semantic:text>person exclamation(Input)</semantic:text>
         </semantic:literalExpression>
       </semantic:contextEntry>
       <semantic:contextEntry>
         <semantic:literalExpression id="_fcc2dca9-e41f-474e-a8c4-4cd2e6d31d01">
-          <semantic:text>result person.name</semantic:text>
+          <semantic:text>result person[1].name</semantic:text>
         </semantic:literalExpression>
       </semantic:contextEntry>
     </semantic:context>
@@ -57,6 +60,6 @@
         </semantic:contextEntry>
       </semantic:context>
     </semantic:encapsulatedLogic>
-    <semantic:variable id="_5ca73b1b-1ee5-4cb5-884e-33c07dc07299" name="person exclamation" typeRef="tPerson"/>
+    <semantic:variable id="_5ca73b1b-1ee5-4cb5-884e-33c07dc07299" name="person exclamation" typeRef="tPersonList"/>
   </semantic:businessKnowledgeModel>
 </semantic:definitions>
