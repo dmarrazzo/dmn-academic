@@ -17,9 +17,9 @@ import org.kie.dmn.api.core.DMNResult;
 import org.kie.dmn.api.core.DMNRuntime;
 
 public class DmnRunner {
-	private static final int NUMBER_OF_RUNS = 10;
+	private static final int NUMBER_OF_RUNS = 1;
 	private static final int TEST_CONTROL_NUMBER = 1;
-	private static final int NUMBER_OF_ELEMENTS_OF_INPUTLIST = 500;
+	private static final int NUMBER_OF_ELEMENTS_OF_INPUTLIST = 100;
 
 	public static void main(String[] args) {
 		KieServices kieServices = KieServices.Factory.get();
@@ -27,15 +27,17 @@ public class DmnRunner {
 		KieContainer kieContainer = kieServices.getKieClasspathContainer();
 		DMNRuntime dmnRuntime = kieContainer.newKieSession().getKieRuntime(DMNRuntime.class);
 
+		DMNListenerImpl listen = new DMNListenerImpl();
+		dmnRuntime.addListener(listen);
 		Map<String, String> testModelsData = new HashMap<>();
-//		testModelsData.put("testCase_academic_15", "http://www.trisotech.com/definitions/_453b392c-b474-415e-b3b5-84255b711990");
+		testModelsData.put("testCase_academic_15", "http://www.trisotech.com/definitions/_453b392c-b474-415e-b3b5-84255b711990");
 //		testModelsData.put("testCase_academic_20", "http://www.trisotech.com/definitions/_33429f3e-bbd5-4d34-9baf-5fb6e3d93bd9");
 //		testModelsData.put("testCase_academic_25", "http://www.trisotech.com/definitions/_111a7145-f140-4eee-ab0b-a3f34b5a846c");
 //		testModelsData.put("testCase_academic_30", "http://www.trisotech.com/definitions/_9ede3af6-f1aa-498e-bda4-b5880dfa67f5");
 //		testModelsData.put("testCase_academic_35", "http://www.trisotech.com/definitions/_ff2c5219-6f70-401f-ba0b-2d32c0b7d95b");
 //		testModelsData.put("testCase_academic_40", "http://www.trisotech.com/definitions/_26904dd6-17bd-41c3-a771-377fba245a7f");
 //		testModelsData.put("testCase_academic_45", "http://www.trisotech.com/definitions/_b4bd2624-06ab-46cd-be07-6b41f6e7370a");
-		testModelsData.put("testCase_academic_50", "http://www.trisotech.com/definitions/_822984a5-95bd-411b-88a4-f3ebfecc5f3c");
+//		testModelsData.put("testCase_academic_50", "http://www.trisotech.com/definitions/_822984a5-95bd-411b-88a4-f3ebfecc5f3c");
 		
 		// Sorting by converting HashMap to TreeMap 
 		Map<String, String> treeMapTestModelData = new TreeMap<String, String>(testModelsData);
@@ -50,6 +52,10 @@ public class DmnRunner {
 			DMNDecisionResult dr = dmnResult.getDecisionResultByName("Testcontrol");
 			// System.out.println("Decision '" + dr.getDecisionName() + "' : " +
 			// dr.getResult());
+			
+			for (DMNDecisionResult dmnDecisionResult : dmnResult.getDecisionResults()) {
+				System.out.println("decision name: "+ dmnDecisionResult.getDecisionName());
+			}
 			System.out.println("======================");
 			System.out.println(" ");
 		}
