@@ -22,8 +22,8 @@ public class DMNListenerImpl implements DMNRuntimeEventListener {
 	}
 
 	@Override
-	public void afterEvaluateDecisionTable(AfterEvaluateDecisionTableEvent arg0) {
-		// TODO Auto-generated method stub
+	public void afterEvaluateDecisionTable(AfterEvaluateDecisionTableEvent dtEvent) {
+		//dtEvent.getMatches();
 
 	}
 

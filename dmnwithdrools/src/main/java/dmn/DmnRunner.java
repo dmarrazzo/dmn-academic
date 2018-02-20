@@ -78,7 +78,8 @@ public class DmnRunner {
 			dmnContext.set("InputPersonList", personList);
 			dmnContext.set("InputPerson", person);
 			dmnContext.set("Testnumber", TEST_CONTROL_NUMBER);
-			dmnResult = dmnRuntime.evaluateAll(dmnModel, dmnContext);
+			//dmnResult = dmnRuntime.evaluateAll(dmnModel, dmnContext);
+			dmnResult = dmnRuntime.evaluateByName(dmnModel, dmnContext, "Testcontrol");
 			long endtime = System.nanoTime();
 
 			Long elapsedtime = endtime - starttime;
