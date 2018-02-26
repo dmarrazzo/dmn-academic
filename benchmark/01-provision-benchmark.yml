@@ -1,0 +1,77 @@
+---
+- name: provision benchmark system
+  hosts: ec2
+  gather_facts: False
+  vars:
+    EAP_HOME: "~/jboss-eap-7.1"
+    eap_admin_user: "admin"
+    eap_admin_password: "silent!123"
+    eap_controller_user: "controllerUser"
+    eap_controller_password: "controllerUser1234;"
+  tasks:
+    - name: basic installation
+      block:
+       - yum:
+          name: wget
+          state: present
+         become: true
+       - yum:
+          name: unzip
+          state: present
+         become: true
+       - yum:
+          name: java-1.8.0-openjdk
+          state: present
+         become: true
+       - file:
+          path: "{{ EAP_HOME }}"
+          state: directory
+       - file:
+          path: ~/tmp/rhdm-7.0.0.GA-decision-central-eap7-deployable
+          state: directory
+       - file:
+          path: ~/tmp/rhdm-7.0.0.GA-kie-server-ee7
+          state: directory
+       - name: copy product binaries JBoss EAP
+         copy:
+           src: ./product-files/jboss-eap-7.1.0.zip
+           dest: ~/
+       - name: copy product binaries JBoss Decision Manager (Decision Central)
+         copy:
+           src: ./product-files/rhdm-7.0.0.GA-decision-central-eap7-deployable.zip
+           dest: ~/
+       - name: copy product binaries JBoss Decision Manager (KIE Server)
+         copy:
+           src: ./product-files/rhdm-7.0.0.GA-kie-server-ee7.zip
+           dest: ~/
+       - name: unzip product binaries JBoss EAP
+         unarchive:
+           src: ~/jboss-eap-7.1.0.zip
+           dest: ~/
+           copy: no
+       - name: unzip product binaries JBoss Decision Manager (Decision Central)
+         unarchive:
+           src: ~/rhdm-7.0.0.GA-decision-central-eap7-deployable.zip
+           dest: ~/tmp/rhdm-7.0.0.GA-decision-central-eap7-deployable
+           copy: no
+       - name: unzip product binaries JBoss Decision Manager (KIE Server)
+         unarchive:
+           src: rhdm-7.0.0.GA-kie-server-ee7.zip
+           dest: ~/tmp/rhdm-7.0.0.GA-kie-server-ee7
+           copy: no
+       - name: install product binaries JBoss Decision Manager (Decision Central)
+         command: "cp -r ~/tmp/rhdm-7.0.0.GA-decision-central-eap7-deployable/jboss-eap-7.1/ ~/"
+       - name: install product binaries JBoss Decision Manager (KIE Server) - kie-server.war
+         command: "cp -r ~/tmp/rhdm-7.0.0.GA-kie-server-ee7/kie-server.war {{ EAP_HOME }}/standalone/deployments/"
+       - name: install product binaries JBoss Decision Manager (KIE Server) - kie-server.war.dodeploy
+         command: "touch {{ EAP_HOME }}/standalone/deployments/kie-server.war.dodeploy"
+       - name: install product binaries JBoss Decision Manager (KIE Server) - SecurityPolicy
+         command: "cp -r ~/tmp/rhdm-7.0.0.GA-kie-server-ee7/SecurityPolicy/ {{ EAP_HOME }}/bin/"
+       - name: create admin user
+         command: "{{ EAP_HOME }}/bin/add-user.sh -a --user {{ eap_admin_user }} --password {{ eap_admin_password }} --role kie-server,admin"
+       - name: create constrollerUser user
+         command: "{{ EAP_HOME }}/bin/add-user.sh -a --user {{ eap_controller_user }} --password {{ eap_controller_password }} --role kie-server,rest-all"
+       - name: copy standalone.xml
+         template:
+           src: config/standalone.xml.j2
+           dest: "{{ EAP_HOME }}/standalone/configuration/standalone.xml"

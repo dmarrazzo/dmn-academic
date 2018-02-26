@@ -1,0 +1,6 @@
+[ec2]
+ec2-52-59-188-203.eu-central-1.compute.amazonaws.com
+
+[ec2:vars]
+ansible_connection=ssh
+ansible_user=ec2-user
